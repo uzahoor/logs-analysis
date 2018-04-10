@@ -2,7 +2,7 @@
 CREATE OR REPLACE view top_articles AS 
 	SELECT articles.title, articles.author, COUNT(*) AS views 
 	FROM articles JOIN log 
-	ON log.path LIKE CONCAT('/article/%', articles.slug)
+	ON log.path = '/article/' || articles.slug
 	GROUP BY articles.title, articles.author
 	ORDER BY views DESC;
 

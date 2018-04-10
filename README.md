@@ -4,11 +4,22 @@ This is a simple Python script that outputs some interesting query results of th
 
 ## Prerequisites
 
-* Python 3 or later.
+* Python 2.7.
 * Postgresql version 9.5.11 or later 
 * The 'news' database in Postgresql
 * Linux flavors, OS X and Windows, packages are available at https://wiki.python.org/moin/BeginnersGuide/Download
 
+## Setting up the 'news' database in Postgresql
+
+These instructions will create the 'news' database that is required to run the python script
+
+1. Download the following zip file [Download link](https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip)
+2. Extract the zip file, A sql file named 'newsdata.sql' will now exist
+3. Run the 'newsdata.sql' using the following command
+```
+$ psql -U <db_user> news < newsdata.sql
+```
+4. The 'news' database should be created
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. Follow the instructions below.
@@ -19,7 +30,7 @@ These instructions will get you a copy of the project up and running on your loc
 ```
 $ psql news -f newsdata_views.sql
 ```
-3. Run 'newsdata.py' to get the desired log analysis
+4. Run 'newsdata.py' to get the desired log analysis
 ```
 $ python newsdata.py
 ```
@@ -31,7 +42,7 @@ View to get the top articles in the database which can later be filtered to show
 	CREATE OR REPLACE view top_articles AS
 	SELECT articles.title, articles.author, COUNT(*) AS views
 	FROM articles JOIN log 
-	ON log.path LIKE CONCAT('/article/%', articles.slug)
+	ON log.path = '/article/' || articles.slug
 	GROUP BY articles.title, articles.author
 	ORDER BY views DESC;
 
